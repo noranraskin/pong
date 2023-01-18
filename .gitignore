@@ -12,3 +12,5 @@ _deps
 cmake-build-debug
 build
 Pong
+.vscode
+.idea

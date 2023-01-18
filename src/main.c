@@ -2,6 +2,7 @@
 
 #include "main.h"
 #include <stdio.h>
+#include <math.h>
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 450
@@ -35,17 +36,29 @@ int main(void) {
     while (!WindowShouldClose())
     {
         // Update
-        if (IsKeyDown(KEY_W)) leftPaddle.y -= PADDLE_SPEED;
-        if (IsKeyDown(KEY_S)) leftPaddle.y += PADDLE_SPEED;
-        if (IsKeyDown(KEY_UP)) rightPaddle.y -= PADDLE_SPEED;
-        if (IsKeyDown(KEY_DOWN)) rightPaddle.y += PADDLE_SPEED;
+        if (IsKeyDown(KEY_W)) {
+            leftPaddle.y = fmaxf(leftPaddle.y - PADDLE_SPEED, 0);
+        }
+        if (IsKeyDown(KEY_S)) {
+            leftPaddle.y = fminf(leftPaddle.y + PADDLE_SPEED, WINDOW_HEIGHT - PADDLE_HEIGHT);
+        }
+        if (IsKeyDown(KEY_UP)) {
+            rightPaddle.y = fmaxf(rightPaddle.y - PADDLE_SPEED, 0);
+        }
+        if (IsKeyDown(KEY_DOWN)) {
+            rightPaddle.y = fminf(rightPaddle.y + PADDLE_SPEED, WINDOW_HEIGHT - PADDLE_HEIGHT);
+        }
 
         ballPos.x += ballSpeed.x;
         ballPos.y += ballSpeed.y;
 
         // Check for collisions with the paddles
-        if (CheckCollisionRecs(leftPaddle, (Rectangle){ ballPos.x, ballPos.y, BALL_SIZE, BALL_SIZE })) ballSpeed.x *= -1;
-        if (CheckCollisionRecs(rightPaddle, (Rectangle){ ballPos.x, ballPos.y, BALL_SIZE, BALL_SIZE })) ballSpeed.x *= -1;
+        if (CheckCollisionRecs(leftPaddle, (Rectangle){ ballPos.x, ballPos.y, BALL_SIZE, BALL_SIZE })) {
+            ballSpeed.x = fabsf(ballSpeed.x);
+        }
+        if (CheckCollisionRecs(rightPaddle, (Rectangle){ ballPos.x, ballPos.y, BALL_SIZE, BALL_SIZE })) {
+            ballSpeed.x = -fabsf(ballSpeed.x);
+        }
 
         // Check for collisions with the walls
         if (ballPos.y < 0 || ballPos.y > WINDOW_HEIGHT - BALL_SIZE) ballSpeed.y *= -1;
