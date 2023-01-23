@@ -7,7 +7,7 @@ include_directories(src)
 
 add_executable(Pong
         src/main.c
-        src/main.h)
+        src/main.h src/game.c src/game.h)
 
 target_include_directories(Pong PRIVATE ${raylib_INCLUDE_DIRS})
 target_link_libraries(Pong PRIVATE ${raylib_LIBRARIES})
