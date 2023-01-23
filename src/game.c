@@ -7,9 +7,8 @@
 #include <math.h>
 #include <time.h>
 
-double scale_factor = 1.0;
 #define WINDOW_WIDTH (800 * scale_factor)
-#define WINDOW_HEIGHT (450 * scale_factor)
+#define WINDOW_HEIGHT (600 * scale_factor)
 
 #define PADDLE_WIDTH (20 * scale_factor)
 #define PADDLE_HEIGHT (80 * scale_factor)

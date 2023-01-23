@@ -26,4 +26,7 @@ void game(GameMode);
 void pvp(Rectangle *, sBall);
 void normal(Rectangle *, sBall);
 void hard(Rectangle *, sBall);
+
+extern double scale_factor;
+
 #endif //PONG_GAME_H
