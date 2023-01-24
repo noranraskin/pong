@@ -1,7 +1,6 @@
 // main.c
 
 #include "main.h"
-#include "game.h"
 #include "menu.h"
 #include "raylib.h"
 

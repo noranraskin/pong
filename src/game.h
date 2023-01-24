@@ -11,11 +11,6 @@ typedef struct {
     Vector2 speed;
 } sBall;
 
-typedef struct {
-    Rectangle paddle;
-    int Score;
-} sPaddle;
-
 typedef enum {
     PVP,
     NORMAL,
