@@ -95,7 +95,7 @@ void menu() {
             case KEY_ENTER:
             case ' ':
                 if (highlight == 2) {
-                    game(gameMode);
+                    game(gameMode, 5);
                     break;
                 }
                 else if (highlight == 3){

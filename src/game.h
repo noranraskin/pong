@@ -17,7 +17,7 @@ typedef enum {
     HARD
 } GameMode;
 
-void game(GameMode);
+void game(GameMode, int MaxPoints);
 void pvp(Rectangle *, sBall);
 void normal(Rectangle *, sBall);
 void hard(Rectangle *, sBall);

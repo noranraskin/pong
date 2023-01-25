@@ -22,6 +22,10 @@
 #define BALL_SIZE (20 * scale_factor)
 #define BALL_SPEED (0.1 * scale_factor)
 
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
+
+
 void pvp(Rectangle * paddle, sBall _) {
     if (IsKeyDown(KEY_UP)) {
         paddle->y = fmax(paddle->y - PADDLE_SPEED,(double) 0);
@@ -76,7 +80,7 @@ void hard(Rectangle * paddle, sBall ball) {
     if(paddle->y > WINDOW_HEIGHT - PADDLE_HEIGHT) paddle->y = WINDOW_HEIGHT - PADDLE_HEIGHT;
 }
 
-void game(GameMode mode) {
+void game(GameMode mode, int maxPoints) {
     // Initialize the window
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Pong");
 
@@ -101,10 +105,10 @@ void game(GameMode mode) {
     // Initialize the scores
     int leftScore = 0;
     int rightScore = 0;
+    time_t startTime = time(0);
 
     // Main game loop
-    while (!WindowShouldClose())
-    {
+    while (!WindowShouldClose()) {
         // Update player paddle
         if (IsKeyDown(KEY_W)) {
             leftPaddle.y = fmaxf(leftPaddle.y - PADDLE_SPEED, 0);
@@ -141,6 +145,12 @@ void game(GameMode mode) {
             ball.speed = (Vector2) {-BALL_SPEED, -BALL_SPEED};
         }
 
+        int maxScore = MAX(leftScore, rightScore);
+        int minScore = MIN(leftScore, rightScore);
+        if ((maxScore > maxPoints && maxScore - minScore > 1) || maxScore > 2 * maxPoints) {
+            break;
+        }
+
         // Draw
         BeginDrawing();
 
@@ -154,6 +164,36 @@ void game(GameMode mode) {
         sprintf(scoreText, "%d : %d", leftScore, rightScore);
         DrawText(scoreText, WINDOW_WIDTH/2 - MeasureText(scoreText, FONTSIZE)/2, TEXTOFFSET, FONTSIZE, WHITE);
 
+        EndDrawing();
+    }
+    time_t endtime = time(0);
+    time_t dur = endtime - startTime;
+    struct tm *tm;
+    if ((tm = localtime(&dur)) == NULL) {
+        tm = NULL;
+    }
+    char scoreText[23];
+    char timeText[23];
+    char exitText[23];
+    if (leftScore > rightScore) {
+        sprintf(scoreText, "Left side won!");
+    } else if (leftScore < rightScore) {
+        sprintf(scoreText, "Right side won!");
+    } else {
+        sprintf(scoreText, "Tie!");
+    }
+    if (tm != NULL) {
+        sprintf(timeText, "Playtime %dm %ds", tm->tm_min, tm->tm_sec);
+    } else {
+        sprintf(timeText, " ");
+    }
+    sprintf(exitText, "Press ESC to exit");
+    while(!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(BLACK);
+        DrawText(scoreText, WINDOW_WIDTH/2 - MeasureText(scoreText, FONTSIZE*2)/2, WINDOW_HEIGHT/2 - FONTSIZE*2, FONTSIZE*2, WHITE);
+        DrawText(timeText, WINDOW_WIDTH/2 - MeasureText(timeText, FONTSIZE)/2, WINDOW_HEIGHT/2 + FONTSIZE*3, FONTSIZE, WHITE);
+        DrawText(exitText, WINDOW_WIDTH/2 - MeasureText(exitText, FONTSIZE/2)/2, WINDOW_HEIGHT - FONTSIZE * 2, FONTSIZE/2, WHITE);
         EndDrawing();
     }
 
