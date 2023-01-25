@@ -35,7 +35,7 @@ void pvp(Rectangle * paddle, sBall _) {
     }
 }
 
-void normal(Rectangle * paddle, sBall ball) {
+void normal(Rectangle* paddle, sBall ball) {
     if (ball.speed.x < 0) {
         return;
     }
@@ -90,7 +90,7 @@ void game(GameMode mode, int maxPoints) {
 
     // Initialize the ball
     sBall ball = {WINDOW_WIDTH/2, WINDOW_HEIGHT/2, BALL_SPEED, BALL_SPEED};
-    void (*updateRightPaddle) (Rectangle* paddle, sBall ball);
+    void (*updateRightPaddle) (Rectangle*, sBall);
     switch (mode) {
         case PVP:
             updateRightPaddle = pvp;
@@ -147,7 +147,7 @@ void game(GameMode mode, int maxPoints) {
 
         int maxScore = MAX(leftScore, rightScore);
         int minScore = MIN(leftScore, rightScore);
-        if ((maxScore > maxPoints && maxScore - minScore > 1) || maxScore > 2 * maxPoints) {
+        if ((maxScore >= maxPoints && maxScore - minScore > 1) || maxScore > 2 * maxPoints) {
             break;
         }
 
